@@ -1,0 +1,1 @@
+A : float [3]; B : double [3]; C = A @ B;

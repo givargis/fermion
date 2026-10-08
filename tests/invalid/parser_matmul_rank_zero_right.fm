@@ -1,0 +1,1 @@
+A : double [3]; B : double [1]; C = A @ reshape(B, []);

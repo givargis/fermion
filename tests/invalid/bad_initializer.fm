@@ -1,0 +1,1 @@
+A : double [2] = uniform(0, 1, 2);

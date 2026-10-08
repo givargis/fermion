@@ -1,0 +1,8 @@
+T : float [2,3];
+E : float [0,3];
+D = !false;
+R : float [ndim(argsort(T,-1,D)), shape(argsort(T,0,false),0), numel(argsort(T,1,true))];
+Z : float [numel(argsort(E,0,false))];
+C : float [shape(argsort(T`,0,true),0)];
+I : long [2,3];
+K : float [numel(argsort(T,1,true) + I)];

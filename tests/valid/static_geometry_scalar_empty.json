@@ -1,0 +1,178 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "A",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "S",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 0,
+        "size": 6,
+        "numel": 1,
+        "offset": 5,
+        "shape": [],
+        "stride": []
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 2,
+          "refs": 1,
+          "lineno": 2,
+          "column": 5,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              2,
+              3
+            ],
+            "stride": [
+              3,
+              1
+            ]
+          },
+          "node": "A"
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 1,
+          "refs": 1,
+          "lineno": 2,
+          "column": 6,
+          "dtype": "DTYPE_FP64",
+          "left": 2,
+          "geometry": {
+            "ndim": 0,
+            "size": 6,
+            "numel": 1,
+            "offset": 5,
+            "shape": [],
+            "stride": []
+          }
+        }
+      ],
+      "max_expr_id": 2
+    },
+    {
+      "name": "Z",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          0,
+          3
+        ],
+        "stride": [
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "B",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 5,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          1,
+          1,
+          2,
+          0,
+          3
+        ],
+        "stride": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "C",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          3,
+          0
+        ],
+        "stride": [
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "D",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

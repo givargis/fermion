@@ -1,0 +1,331 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "A",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "Lo",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "Hi",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "Bounds",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 4,
+          "refs": 1,
+          "lineno": 4,
+          "column": 23,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "Hi"
+        },
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 2,
+          "refs": 1,
+          "lineno": 4,
+          "column": 16,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "A"
+        },
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 3,
+          "refs": 1,
+          "lineno": 4,
+          "column": 19,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "Lo"
+        },
+        {
+          "op": "EXPR_OP_CLAMP",
+          "id": 1,
+          "refs": 1,
+          "lineno": 4,
+          "column": 10,
+          "dtype": "DTYPE_FP64",
+          "third": 4,
+          "left": 2,
+          "right": 3,
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 4
+    },
+    {
+      "name": "Nested",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_SCALAR",
+          "id": 7,
+          "refs": 1,
+          "lineno": 5,
+          "column": 46,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 0,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [],
+            "stride": []
+          },
+          "fp64": 1
+        },
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 4,
+          "refs": 1,
+          "lineno": 5,
+          "column": 29,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "A"
+        },
+        {
+          "op": "EXPR_OP_ABS",
+          "id": 3,
+          "refs": 1,
+          "lineno": 5,
+          "column": 25,
+          "dtype": "DTYPE_FP64",
+          "right": 4,
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          }
+        },
+        {
+          "op": "EXPR_OP_SCALAR",
+          "id": 5,
+          "refs": 1,
+          "lineno": 5,
+          "column": 33,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 0,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [],
+            "stride": []
+          },
+          "fp64": -1
+        },
+        {
+          "op": "EXPR_OP_COPYSIGN",
+          "id": 2,
+          "refs": 1,
+          "lineno": 5,
+          "column": 16,
+          "dtype": "DTYPE_FP64",
+          "left": 3,
+          "right": 5,
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          }
+        },
+        {
+          "op": "EXPR_OP_SCALAR",
+          "id": 6,
+          "refs": 1,
+          "lineno": 5,
+          "column": 40,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 0,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [],
+            "stride": []
+          },
+          "fp64": -2
+        },
+        {
+          "op": "EXPR_OP_CLAMP",
+          "id": 1,
+          "refs": 1,
+          "lineno": 5,
+          "column": 10,
+          "dtype": "DTYPE_FP64",
+          "third": 7,
+          "left": 2,
+          "right": 6,
+          "geometry": {
+            "ndim": 1,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [
+              1
+            ],
+            "stride": [
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 7
+    }
+  ]
+}

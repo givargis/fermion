@@ -1,0 +1,2 @@
+T : float [6];
+R = reshape(T, [5]);

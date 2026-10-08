@@ -1,0 +1,8 @@
+A : double [1];
+Cos = cos(A);
+Tan = tan(A);
+Softplus = softplus(A);
+Sigmoid = sigmoid(A);
+Silu = silu(A);
+Erfc = erfc(A);
+Gelu = gelu(A);

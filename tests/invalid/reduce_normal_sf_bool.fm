@@ -1,0 +1,2 @@
+A : bool [1];
+B = normal_sf(A);

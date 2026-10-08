@@ -1,0 +1,2 @@
+lower: unsigned short[2] = iota(0,1);
+upper: unsigned short[2] = iota(65534,1);

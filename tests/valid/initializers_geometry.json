@@ -1,0 +1,143 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "Z",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_ZEROS",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": 0,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "O",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_ONES",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": 0,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "U",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_UNIFORM",
+        "low": -2.5,
+        "high": 3.75,
+        "start": 0,
+        "step": 0,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "G",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_NORMAL",
+        "low": 0.0,
+        "high": 1,
+        "start": 0,
+        "step": 0,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "S",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 7,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          4,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+A : double [2, 3] = ones();
+B : double [2, 3] = zeros();
+C = cast<double>(1 != 2) * A;
+D = true ? A : B;
+E = (A > B) ? A : B;

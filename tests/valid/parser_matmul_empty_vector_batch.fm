@@ -1,0 +1,1 @@
+A : double [0]; B : double [2,0,3]; C = A @ B;

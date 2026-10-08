@@ -1,0 +1,4 @@
+T : float [2,3,4];
+R = reshape(T, [6,4]);
+I = reshape(T, [2, -1, 2]);
+N = reshape(reshape(T, [24]), [shape(T,0), 3, 4]);

@@ -1,0 +1,6 @@
+A : double [2,3];
+B : double [3,4];
+C : double [shape(A @ B,-1),numel(A @ B),ndim(A @ B)];
+D : double [shape(concat(A,A,1),1),numel(A[0])];
+E = A + numel(B);
+F : double [shape(E,-1)];

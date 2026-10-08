@@ -1,0 +1,4 @@
+A : double [1];
+I : long [1];
+
+B = gather(A, I, true ? 0 : 1);

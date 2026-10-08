@@ -1,0 +1,15 @@
+F : float [2,3];
+A : double [1];
+E : double [0,2];
+R0Float = sec(F);
+R0Scalar = sec(sum(A,0));
+R0Empty = sec(E);
+R1Float = cot(F);
+R1Scalar = cot(sum(A,0));
+R1Empty = cot(E);
+R2Float = normal_cdf(F);
+R2Scalar = normal_cdf(sum(A,0));
+R2Empty = normal_cdf(E);
+R3Float = normal_sf(F);
+R3Scalar = normal_sf(sum(A,0));
+R3Empty = normal_sf(E);

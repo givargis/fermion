@@ -1,0 +1,1 @@
+A : double [2,3]; B : double [3,2]; C = sin(A) + B;

@@ -1,0 +1,8 @@
+T : float [2,3];
+E : float [0,3];
+R : float [ndim(topk(T,2,1,true,false)), shape(topk(T,1+1,-1,!false,true),1), numel(topk(T,1,0,false,false))];
+Z : float [numel(topk(T,0,1,true,true))];
+A : float [shape(topk(T,3,1,false,true),1)];
+B : float [shape(topk(E,2,1,true,false),1), numel(topk(E,0,0,false,true))];
+I : long [2,2];
+K : float [numel(topk(T,2,1,true,true) + I)];

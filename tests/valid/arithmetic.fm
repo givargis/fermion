@@ -1,0 +1,7 @@
+A : double [2, 3] = ones();
+B : double [2, 3] = uniform();
+C = +A + -B;
+D = A - B;
+E = A * 2;
+F = A / 2.0;
+G = (A + B) * (A - B);

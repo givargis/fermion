@@ -1,0 +1,247 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "T",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP32",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          2,
+          3
+        ],
+        "stride": [
+          3,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "R",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP32",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          3,
+          2
+        ],
+        "stride": [
+          2,
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 3,
+          "refs": 1,
+          "lineno": 2,
+          "column": 13,
+          "dtype": "DTYPE_FP32",
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              2,
+              3
+            ],
+            "stride": [
+              3,
+              1
+            ]
+          },
+          "node": "T"
+        },
+        {
+          "op": "EXPR_OP_SCALAR",
+          "id": 4,
+          "refs": 1,
+          "lineno": 2,
+          "column": 17,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 0,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [],
+            "stride": []
+          },
+          "fp64": 1
+        },
+        {
+          "op": "EXPR_OP_ADD",
+          "id": 2,
+          "refs": 1,
+          "lineno": 2,
+          "column": 15,
+          "dtype": "DTYPE_FP32",
+          "left": 3,
+          "right": 4,
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              2,
+              3
+            ],
+            "stride": [
+              3,
+              1
+            ]
+          }
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 1,
+          "refs": 1,
+          "lineno": 2,
+          "column": 5,
+          "dtype": "DTYPE_FP32",
+          "left": 2,
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              3,
+              2
+            ],
+            "stride": [
+              2,
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 4
+    },
+    {
+      "name": "S",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP32",
+      "geometry": {
+        "ndim": 2,
+        "size": 6,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          3,
+          2
+        ],
+        "stride": [
+          2,
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 3,
+          "refs": 1,
+          "lineno": 3,
+          "column": 13,
+          "dtype": "DTYPE_FP32",
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              2,
+              3
+            ],
+            "stride": [
+              3,
+              1
+            ]
+          },
+          "node": "T"
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 2,
+          "refs": 1,
+          "lineno": 3,
+          "column": 5,
+          "dtype": "DTYPE_FP32",
+          "left": 3,
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              3,
+              2
+            ],
+            "stride": [
+              2,
+              1
+            ]
+          }
+        },
+        {
+          "op": "EXPR_OP_SCALAR",
+          "id": 4,
+          "refs": 1,
+          "lineno": 3,
+          "column": 25,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 0,
+            "size": 1,
+            "numel": 1,
+            "offset": 0,
+            "shape": [],
+            "stride": []
+          },
+          "fp64": 2
+        },
+        {
+          "op": "EXPR_OP_ADD",
+          "id": 1,
+          "refs": 1,
+          "lineno": 3,
+          "column": 23,
+          "dtype": "DTYPE_FP32",
+          "left": 2,
+          "right": 4,
+          "geometry": {
+            "ndim": 2,
+            "size": 6,
+            "numel": 6,
+            "offset": 0,
+            "shape": [
+              3,
+              2
+            ],
+            "stride": [
+              2,
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 4
+    }
+  ]
+}

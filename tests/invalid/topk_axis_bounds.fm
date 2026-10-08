@@ -1,0 +1,2 @@
+T : float [2,3];
+N = numel(topk(T,1,2,true,false));

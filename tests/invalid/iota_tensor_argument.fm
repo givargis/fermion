@@ -1,0 +1,2 @@
+a: long[2];
+x: long[4] = iota(a,2);

@@ -1,0 +1,9 @@
+A : double [2];
+B = sum(A, 0);
+C = flatten(B);
+D = squeeze(C, 0);
+E = sin(D);
+Z : double [0,3];
+F = flatten(Z);
+G = sum(Z, 0);
+H = (sin(G) + G)`;

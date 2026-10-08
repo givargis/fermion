@@ -1,0 +1,2 @@
+lower: short[2] = iota(-32768,1);
+upper: short[2] = iota(32766,1);

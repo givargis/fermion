@@ -1,0 +1,5 @@
+A : double [2, 3] = ones();
+B : double [3, 4] = ones();
+C = A @ B;
+D : double [2, 3] = ones();
+E = D + D * 2 - D / 2;

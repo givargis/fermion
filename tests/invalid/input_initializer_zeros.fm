@@ -1,0 +1,2 @@
+A : float [2] = zeros();
+.input A;

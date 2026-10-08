@@ -1,0 +1,9 @@
+T : float [2,3];
+R0 = topk(T,1+1,-1,false,false);
+R1 = topk(T,1+1,-1,false,true);
+R2 = topk(T,1+1,-1,true,false);
+R3 = topk(T,1+1,-1,true,true);
+Z = topk(T,0,1,true,false);
+V = topk(T`,1,0,!false,1>2);
+N = topk(topk(T,3,1,false,true),1,0,true,false);
+G = gather(T,topk(T,2,1,true,true),1);

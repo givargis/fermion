@@ -1,0 +1,2 @@
+A : double [1];
+B = normal_sf(A, A);

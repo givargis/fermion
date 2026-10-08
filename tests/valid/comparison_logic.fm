@@ -1,0 +1,12 @@
+A : double [2, 3] = ones();
+B : double [2, 3] = zeros();
+LT = A < B;
+GT = A > B;
+LE = A <= B;
+GE = A >= B;
+EQ = A == B;
+NE = A != B;
+LNOT = !(A == B);
+LAND = (A < B) && (A != B);
+LXOR = (A < B) ^^ (A != B);
+LOR = (A < B) || (A != B);

@@ -1,0 +1,11 @@
+A : long [1];
+Positive = A + (+7);
+Complement = A + (~5);
+Divide = A + (-17 / 5);
+Remainder = A + (-17 % 5);
+ShiftRight = A + (64 >> 3);
+And = A + (13 & 7);
+Or = A + (8 | 3);
+Xor = A + (13 ^ 7);
+Precedence = A + (2 + 3 * 4 << 1);
+Hex = A + (0xAb + 0Xf);

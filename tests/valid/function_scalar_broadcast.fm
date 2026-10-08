@@ -1,0 +1,4 @@
+A : double [2];
+
+ScalarSecond = min(A, sum(A, 0));
+ScalarFirst = min(sum(A, 0), A);

@@ -1,0 +1,8 @@
+T : float [2,3];
+Flag = !false;
+A = argsort(T,-1,Flag);
+B = argsort(T`,0,false);
+C = argsort(T+1.0,1-1,1<2);
+D = argsort(argsort(T,0,false),1,true);
+E : long [0,3];
+Z = argsort(E,1,false);

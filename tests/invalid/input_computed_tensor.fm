@@ -1,0 +1,3 @@
+A : float [2];
+D = A * 2;
+.input D;

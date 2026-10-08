@@ -1,0 +1,9 @@
+A : unsigned int [2, 3] = ones();
+B : unsigned int [2, 3] = ones();
+C = ~A;
+D = A % 3;
+E = A & B;
+F = A ^ B;
+G = A | B;
+H = A << 2;
+I = A >> 1;

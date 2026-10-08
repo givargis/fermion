@@ -1,0 +1,3 @@
+A : float [2, 3] = uniform();
+B : float [2, 3];
+C = A + B;

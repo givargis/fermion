@@ -1,0 +1,3 @@
+A : double [2, 3] = ones();
+B : double [3, 2] = ones();
+C = A + B;

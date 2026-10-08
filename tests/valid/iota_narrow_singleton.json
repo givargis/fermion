@@ -1,0 +1,329 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "i8_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT8",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": -128,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "i8_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT8",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 127,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u8_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT8",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u8_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT8",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 255,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "i16_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": -32768,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "i16_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 32767,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u16_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u16_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 65535,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "i32_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT32",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": -2147483648,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "i32_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT32",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 2147483647,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u32_lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT32",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": -9223372036854775808,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "u32_upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT32",
+      "geometry": {
+        "ndim": 1,
+        "size": 1,
+        "numel": 1,
+        "offset": 0,
+        "shape": [
+          1
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 4294967295,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

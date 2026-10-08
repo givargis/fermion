@@ -1,0 +1,5 @@
+A : bool [1];
+Newline = A == ("a\n" == "a\x0a");
+Quotes = A == ("\"\'\\" == "\x22\x27\x5c");
+Controls = A == ("\a\b\f\r\t\v" == "\x07\x08\x0c\x0d\x09\x0b");
+Empty = A == ("" < "a");

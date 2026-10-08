@@ -1,0 +1,2 @@
+A : double [2];
+B = (A > 0) ? sum(A, 0) : product(A, 0);

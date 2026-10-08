@@ -1,0 +1,4 @@
+A : float [2];
+B : float [2];
+.input A
+.output B;

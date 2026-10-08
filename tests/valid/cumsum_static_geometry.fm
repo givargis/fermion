@@ -1,0 +1,5 @@
+T : float [2,3];
+E : float [0,3];
+R : float [ndim(cumsum(T,-1)), shape(cumsum(T,0),0), shape(cumsum(T,1),1), numel(cumsum(T,1))];
+Z : float [numel(cumsum(E,0))];
+C : float [shape(cumsum(T + 1.0, 1-2),1)];

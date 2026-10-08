@@ -1,0 +1,12 @@
+i8_lower: byte[4] = iota(-128,0);
+i8_upper: byte[4] = iota(127,0);
+u8_lower: unsigned byte[4] = iota(0,0);
+u8_upper: unsigned byte[4] = iota(255,0);
+i16_lower: short[4] = iota(-32768,0);
+i16_upper: short[4] = iota(32767,0);
+u16_lower: unsigned short[4] = iota(0,0);
+u16_upper: unsigned short[4] = iota(65535,0);
+i32_lower: int[4] = iota(-2147483648,0);
+i32_upper: int[4] = iota(2147483647,0);
+u32_lower: unsigned int[4] = iota(0,0);
+u32_upper: unsigned int[4] = iota(4294967295,0);

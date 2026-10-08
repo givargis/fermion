@@ -1,0 +1,10 @@
+N = 1 - 1;
+A : double [1];
+I : long [1];
+
+Sum = sum(A, N);
+Squeeze = squeeze(A, N);
+Unsqueeze = unsqueeze(A, N);
+Concat = concat(A, A, N);
+Gather = gather(A, I, N);
+Scatter = scatter(A, I, A, N);

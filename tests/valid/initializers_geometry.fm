@@ -1,0 +1,6 @@
+N = 3;
+Z : double [2, N] = zeros();
+O : double [2, N] = ones();
+U : double [2, N] = uniform(-2.5, 3.75);
+G : double [2, N] = normal(0, 1);
+S : double [2, N] [4, 1];

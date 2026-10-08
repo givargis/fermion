@@ -1,0 +1,2 @@
+A : double [2] = zeros();
+A : double [2] = ones();

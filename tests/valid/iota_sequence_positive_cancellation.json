@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "x",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_INT64",
+      "geometry": {
+        "ndim": 1,
+        "size": 3,
+        "numel": 3,
+        "offset": 0,
+        "shape": [
+          3
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": -9223372036854775808,
+        "step": 9223372036854775807,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

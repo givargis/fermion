@@ -1,0 +1,5 @@
+A : double [1];
+Lo : double [1];
+Hi : double [1];
+Bounds = clamp(A, Lo, Hi);
+Nested = clamp(copysign(abs(A), -1.0), -2.0, 1.0);

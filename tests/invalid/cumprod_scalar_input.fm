@@ -1,0 +1,2 @@
+T : float [2,3];
+N = numel(cumprod(1.0,1));

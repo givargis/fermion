@@ -1,0 +1,59 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "lower",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 2,
+        "numel": 2,
+        "offset": 0,
+        "shape": [
+          2
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 0,
+        "step": 1,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "upper",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_UINT16",
+      "geometry": {
+        "ndim": 1,
+        "size": 2,
+        "numel": 2,
+        "offset": 0,
+        "shape": [
+          2
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": {
+        "type": "INIT_OP_IOTA",
+        "low": 0.0,
+        "high": 0.0,
+        "start": 65534,
+        "step": 1,
+        "seed": 0
+      },
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "A",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 3,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          0,
+          9223372036854775807,
+          2
+        ],
+        "stride": [
+          1,
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "B",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 3,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          2,
+          9223372036854775807,
+          0
+        ],
+        "stride": [
+          1,
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 3,
+          "refs": 1,
+          "lineno": 2,
+          "column": 7,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 3,
+            "size": 0,
+            "numel": 0,
+            "offset": 0,
+            "shape": [
+              0,
+              9223372036854775807,
+              2
+            ],
+            "stride": [
+              1,
+              1,
+              1
+            ]
+          },
+          "node": "A"
+        },
+        {
+          "op": "EXPR_OP_NEG",
+          "id": 2,
+          "refs": 1,
+          "lineno": 2,
+          "column": 6,
+          "dtype": "DTYPE_FP64",
+          "right": 3,
+          "geometry": {
+            "ndim": 3,
+            "size": 0,
+            "numel": 0,
+            "offset": 0,
+            "shape": [
+              0,
+              9223372036854775807,
+              2
+            ],
+            "stride": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 1,
+          "refs": 1,
+          "lineno": 2,
+          "column": 9,
+          "dtype": "DTYPE_FP64",
+          "left": 2,
+          "geometry": {
+            "ndim": 3,
+            "size": 0,
+            "numel": 0,
+            "offset": 0,
+            "shape": [
+              2,
+              9223372036854775807,
+              0
+            ],
+            "stride": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 3
+    },
+    {
+      "name": "C",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP32",
+      "geometry": {
+        "ndim": 3,
+        "size": 0,
+        "numel": 0,
+        "offset": 0,
+        "shape": [
+          2,
+          9223372036854775807,
+          0
+        ],
+        "stride": [
+          1,
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 2,
+          "refs": 1,
+          "lineno": 3,
+          "column": 17,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 3,
+            "size": 0,
+            "numel": 0,
+            "offset": 0,
+            "shape": [
+              2,
+              9223372036854775807,
+              0
+            ],
+            "stride": [
+              1,
+              1,
+              1
+            ]
+          },
+          "node": "B"
+        },
+        {
+          "op": "EXPR_OP_CAST",
+          "id": 1,
+          "refs": 1,
+          "lineno": 3,
+          "column": 5,
+          "dtype": "DTYPE_FP32",
+          "right": 2,
+          "geometry": {
+            "ndim": 3,
+            "size": 0,
+            "numel": 0,
+            "offset": 0,
+            "shape": [
+              2,
+              9223372036854775807,
+              0
+            ],
+            "stride": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 2
+    }
+  ]
+}

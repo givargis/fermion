@@ -1,0 +1,14 @@
+I8 : byte [2] = zeros();
+U8 : unsigned byte [2] = ones();
+I16 : short [2] = zeros();
+U16 : unsigned short [2] = ones();
+I32 : int [2] = zeros();
+U32 : unsigned int [2] = ones();
+I64 : long [2] = zeros();
+U64 : unsigned long [2] = ones();
+F8A : fp8_e4m3 [2] = zeros();
+F8C : fp8_e5m2 [2] = zeros();
+BF : bf16 [2] = zeros();
+FH : fp16 [2] = zeros();
+FS : float [2] = zeros();
+FD : double [2] = zeros();

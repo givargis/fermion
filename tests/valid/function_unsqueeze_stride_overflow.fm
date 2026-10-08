@@ -1,0 +1,4 @@
+A : double [2] [9223372036854775806];
+
+B = unsqueeze(A, 0);
+C = squeeze(B, 0);

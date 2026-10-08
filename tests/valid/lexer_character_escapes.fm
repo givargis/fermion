@@ -1,0 +1,15 @@
+A : long [1];
+Plain = A + ('A');
+Nul = A + ('\0');
+Alarm = A + ('\a');
+Backspace = A + ('\b');
+Formfeed = A + ('\f');
+Newline = A + ('\n');
+Return = A + ('\r');
+Tab = A + ('\t');
+Vertical = A + ('\v');
+Backslash = A + ('\\');
+Quote = A + ('\'');
+DoubleQuote = A + ('\"' );
+HexLower = A + ('\xAf');
+HexUpper = A + ('\X4A');

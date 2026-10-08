@@ -1,0 +1,27 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "A",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 8,
+        "numel": 6,
+        "offset": 0,
+        "shape": [
+          3,
+          2
+        ],
+        "stride": [
+          2,
+          3
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+A : double [2,3];
+B : double [4];
+N = numel(A+B);

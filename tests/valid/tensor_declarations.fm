@@ -1,0 +1,5 @@
+A : float [2];
+B : float [2] = zeros();
+C = A + B;
+D = A * 2;
+E : float [2];

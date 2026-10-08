@@ -1,0 +1,5 @@
+T : float [2,3];
+E : float [0,3];
+R : float [ndim(cumprod(T,-1)), shape(cumprod(T,0),0), shape(cumprod(T,1),1), numel(cumprod(T,1))];
+Z : float [numel(cumprod(E,0))];
+C : float [shape(cumprod(T + 1.0, 1-2),1)];

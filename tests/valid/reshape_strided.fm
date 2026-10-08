@@ -1,0 +1,3 @@
+T : float [8];
+R = reshape(T[1::2], [2,2]);
+S = reshape(T[::-1], [2,4]);

@@ -1,0 +1,1 @@
+x: unsigned byte[2] = iota(256,-1);

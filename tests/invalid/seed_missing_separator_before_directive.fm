@@ -1,0 +1,2 @@
+U : double [2] = uniform()
+.seed 123;

@@ -1,0 +1,2 @@
+A : double [1];
+N = shape(A,0,0);

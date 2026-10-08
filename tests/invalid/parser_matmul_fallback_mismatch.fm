@@ -1,0 +1,1 @@
+A : double [2,3]; B : double [2,4]; C = sin(A) @ B;

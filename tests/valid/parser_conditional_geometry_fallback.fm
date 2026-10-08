@@ -1,0 +1,5 @@
+A : double [2,3];
+M : bool [2,3];
+B = M ? sin(A) : A;
+C = isfinite(A) ? A : 0.0;
+D = B`;

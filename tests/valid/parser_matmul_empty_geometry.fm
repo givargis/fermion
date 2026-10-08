@@ -1,0 +1,7 @@
+A : double [0,3];
+B : double [3,4];
+C = A @ B;
+D : double [2,0];
+E : double [0,4];
+F = D @ E;
+G = F`;

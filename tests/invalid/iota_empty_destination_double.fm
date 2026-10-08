@@ -1,0 +1,1 @@
+x: double[0] = iota();

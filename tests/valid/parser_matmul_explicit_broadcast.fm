@@ -1,0 +1,1 @@
+A : double [1]; B : double [3,4]; C = broadcast(A,[2,3]) @ B;

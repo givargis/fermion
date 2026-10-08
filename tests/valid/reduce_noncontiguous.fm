@@ -1,0 +1,11 @@
+A : double [3,4];
+V = A[::-1,::2];
+P = A{1,0};
+R0Slice = sec(V);
+R0Permute = sec(P);
+R1Slice = cot(V);
+R1Permute = cot(P);
+R2Slice = normal_cdf(V);
+R2Permute = normal_cdf(P);
+R3Slice = normal_sf(V);
+R3Permute = normal_sf(P);

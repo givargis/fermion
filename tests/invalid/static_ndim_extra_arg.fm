@@ -1,0 +1,2 @@
+A : double [1];
+N = ndim(A,0);

@@ -1,0 +1,7 @@
+T : float [2,3];
+A = cumprod(T,-1);
+B = cumprod(T`,0);
+C = cumprod(T+1.0,1-1);
+D = cumprod(cumprod(T,0),1);
+E : long [0,3];
+Z = cumprod(E,-1);

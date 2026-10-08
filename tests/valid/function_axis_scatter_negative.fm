@@ -1,0 +1,4 @@
+A : double [1];
+I : long [1];
+
+B = scatter(A, I, A, -1);

@@ -1,0 +1,4 @@
+A : double [0,3];
+M : bool [0,3];
+B = M ? cast<double>(1.0) : cast<double>(2.0);
+C = (M ? A : 0.0)`;

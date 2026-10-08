@@ -1,0 +1,4 @@
+T : bool [2];
+R = reshape(T, [1,2]);
+I : long [2];
+S = reshape(I, [2,1]);

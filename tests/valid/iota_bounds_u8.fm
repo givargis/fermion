@@ -1,0 +1,2 @@
+lower: unsigned byte[2] = iota(0,1);
+upper: unsigned byte[2] = iota(254,1);

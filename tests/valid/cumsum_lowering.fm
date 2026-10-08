@@ -1,0 +1,7 @@
+T : float [2,3];
+A = cumsum(T,-1);
+B = cumsum(T`,0);
+C = cumsum(T+1.0,1-1);
+D = cumsum(cumsum(T,0),1);
+E : long [0,3];
+Z = cumsum(E,-1);

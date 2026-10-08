@@ -1,0 +1,1 @@
+x: unsigned int[2] = iota(4294967295,1);

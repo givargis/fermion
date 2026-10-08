@@ -1,0 +1,2 @@
+T : bool [2,3];
+N = numel(argsort(T,1,false));

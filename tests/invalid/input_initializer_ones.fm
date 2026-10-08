@@ -1,0 +1,2 @@
+A : float [2] = ones();
+.input A;

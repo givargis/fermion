@@ -1,0 +1,2 @@
+A : long [2] = iota();
+.input A;

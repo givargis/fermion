@@ -1,0 +1,10 @@
+A : double [2, 3] = uniform();
+Min = reduce_min(A, 1);
+Max = reduce_max(A, 1);
+Sum = sum(A, 1);
+Count = count(A, 1);
+Product = product(A, 1);
+Argmin = argmin(A, 1);
+Argmax = argmax(A, 1);
+Any = any(A, 1);
+All = all(A, 1);

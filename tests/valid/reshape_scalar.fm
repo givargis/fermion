@@ -1,0 +1,3 @@
+T : double [3];
+R = reshape(T[1], []);
+V = reshape(reshape(T[1], []), [1,1]);

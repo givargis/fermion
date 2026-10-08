@@ -1,0 +1,9 @@
+A : double [2,3] [1,4];
+I : long [2,3];
+B = sum(A, 1);
+C = unsqueeze(B, 1);
+D = concat(C, C, 1);
+E = gather(A, I, 1);
+F = scatter(A, I, E, 1);
+G = F`;
+H = gelu(G);

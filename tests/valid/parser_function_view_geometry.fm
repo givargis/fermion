@@ -1,0 +1,8 @@
+A : double [2,3] [1,4];
+B = flatten(A);
+C = unsqueeze(A, 1);
+D = squeeze(C, 1);
+E = flatten(A`);
+F = E[::-1];
+G = flatten(F);
+H = sin(D)`;

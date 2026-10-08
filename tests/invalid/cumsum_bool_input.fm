@@ -1,0 +1,2 @@
+T : bool [2,3];
+N = numel(cumsum(T,1));

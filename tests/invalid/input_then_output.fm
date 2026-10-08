@@ -1,0 +1,3 @@
+A : float [2];
+.input A;
+.output A;

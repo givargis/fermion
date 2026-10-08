@@ -1,0 +1,198 @@
+{
+  "version": "0.1.0",
+  "nodes": [
+    {
+      "name": "T",
+      "op": "NODE_OP_TENSOR",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 1,
+        "size": 3,
+        "numel": 3,
+        "offset": 0,
+        "shape": [
+          3
+        ],
+        "stride": [
+          1
+        ]
+      },
+      "init": null,
+      "expr": null,
+      "max_expr_id": 0
+    },
+    {
+      "name": "R",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 0,
+        "size": 3,
+        "numel": 1,
+        "offset": 1,
+        "shape": [],
+        "stride": []
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 3,
+          "refs": 1,
+          "lineno": 2,
+          "column": 13,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 3,
+            "numel": 3,
+            "offset": 0,
+            "shape": [
+              3
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "T"
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 2,
+          "refs": 1,
+          "lineno": 2,
+          "column": 14,
+          "dtype": "DTYPE_FP64",
+          "left": 3,
+          "geometry": {
+            "ndim": 0,
+            "size": 3,
+            "numel": 1,
+            "offset": 1,
+            "shape": [],
+            "stride": []
+          }
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 1,
+          "refs": 1,
+          "lineno": 2,
+          "column": 5,
+          "dtype": "DTYPE_FP64",
+          "left": 2,
+          "geometry": {
+            "ndim": 0,
+            "size": 3,
+            "numel": 1,
+            "offset": 1,
+            "shape": [],
+            "stride": []
+          }
+        }
+      ],
+      "max_expr_id": 3
+    },
+    {
+      "name": "V",
+      "op": "NODE_OP_COMPUTE",
+      "dtype": "DTYPE_FP64",
+      "geometry": {
+        "ndim": 2,
+        "size": 3,
+        "numel": 1,
+        "offset": 1,
+        "shape": [
+          1,
+          1
+        ],
+        "stride": [
+          1,
+          1
+        ]
+      },
+      "init": null,
+      "expr": [
+        {
+          "op": "EXPR_OP_TENSOR",
+          "id": 4,
+          "refs": 1,
+          "lineno": 3,
+          "column": 21,
+          "dtype": "DTYPE_FP64",
+          "geometry": {
+            "ndim": 1,
+            "size": 3,
+            "numel": 3,
+            "offset": 0,
+            "shape": [
+              3
+            ],
+            "stride": [
+              1
+            ]
+          },
+          "node": "T"
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 3,
+          "refs": 1,
+          "lineno": 3,
+          "column": 22,
+          "dtype": "DTYPE_FP64",
+          "left": 4,
+          "geometry": {
+            "ndim": 0,
+            "size": 3,
+            "numel": 1,
+            "offset": 1,
+            "shape": [],
+            "stride": []
+          }
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 2,
+          "refs": 1,
+          "lineno": 3,
+          "column": 13,
+          "dtype": "DTYPE_FP64",
+          "left": 3,
+          "geometry": {
+            "ndim": 0,
+            "size": 3,
+            "numel": 1,
+            "offset": 1,
+            "shape": [],
+            "stride": []
+          }
+        },
+        {
+          "op": "EXPR_OP_VIEW",
+          "id": 1,
+          "refs": 1,
+          "lineno": 3,
+          "column": 5,
+          "dtype": "DTYPE_FP64",
+          "left": 2,
+          "geometry": {
+            "ndim": 2,
+            "size": 3,
+            "numel": 1,
+            "offset": 1,
+            "shape": [
+              1,
+              1
+            ],
+            "stride": [
+              1,
+              1
+            ]
+          }
+        }
+      ],
+      "max_expr_id": 4
+    }
+  ]
+}

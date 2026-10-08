@@ -1,0 +1,3 @@
+A : double [1];
+
+B = squeeze(A, true ? 0 : 1);

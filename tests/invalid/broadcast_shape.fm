@@ -1,0 +1,2 @@
+A : double [3];
+B = broadcast(A,[2,4]);

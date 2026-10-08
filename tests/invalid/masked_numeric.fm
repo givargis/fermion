@@ -1,0 +1,2 @@
+A : double [2,3];
+R = sum(A,1,A);

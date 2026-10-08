@@ -1,0 +1,10 @@
+A : double [2,3] [1,4];
+N = ndim(A);
+M = numel(A);
+K = shape(A, N - 1);
+B : double [N,M,K,shape(A,-2)];
+C = A[0:shape(A,0),0:shape(A,-1)];
+D = sum(A, ndim(A)-1);
+E : double [numel(A`),shape(A`,0),ndim(sin(A))];
+F = cast<long>(numel(A) + shape(A,0) + ndim(A));
+G : double [shape(A,ndim(A)-2)];

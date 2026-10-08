@@ -1,0 +1,4 @@
+// header
+A : long [1]; /* note
+continued */
+B = A + 0x2;// tail

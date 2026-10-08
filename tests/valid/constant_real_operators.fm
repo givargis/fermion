@@ -1,0 +1,10 @@
+A : double [1];
+Positive = A + (+1.25);
+Negative = A + (-1.25);
+Multiply = A + (1.5 * 4);
+Divide = A + (7 / 2.0);
+Add = A + (2 + 0.25);
+Subtract = A + (3.5 - 2);
+Exponent = A + (1.25e+2 + .5E1);
+ConditionalInt = A + (true ? 3 : 4.5);
+ConditionalReal = A + (false ? 3 : 4.5);

@@ -1,0 +1,3 @@
+A : double [1];
+I : long [1];
+N = shape(A,I);

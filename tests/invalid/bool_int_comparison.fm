@@ -1,0 +1,2 @@
+Mask : bool [2] = zeros();
+R = Mask == 1;

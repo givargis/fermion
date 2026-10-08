@@ -1,0 +1,5 @@
+A : double [2,3] [1,4];
+B = cast<float>(A[::-1]);
+C = B`;
+D = cast<double>(A[1,2])`;
+E = cast<float>(2 + 3)`;

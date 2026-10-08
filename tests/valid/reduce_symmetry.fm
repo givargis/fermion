@@ -1,0 +1,5 @@
+A : double [1];
+SecEven = sec(-A) / sec(A);
+CotOdd = cot(-A) / cot(A);
+Complement = normal_cdf(A) + normal_sf(A);
+TailSymmetry = normal_cdf(-A) / normal_sf(A);

@@ -1,0 +1,16 @@
+M : bool [2, 2] = ones();
+I : int [2, 2] = zeros();
+Numeric = cast<int>(M);
+Add = Numeric + 1;
+Positive = +Numeric;
+Matmul = Numeric @ Numeric;
+Total = sum(Numeric, 1);
+Abs = abs(Numeric);
+Minimum = min(Numeric, 0);
+Clamp = clamp(Numeric, 0, 1);
+Count = count(M, 1);
+Flat = flatten(M);
+View = M[0:1, :];
+Joined = concat(M, M, 0);
+Gathered = gather(M, I, 1);
+Scattered = scatter(M, I, M, 1);

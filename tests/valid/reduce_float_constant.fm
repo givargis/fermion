@@ -1,0 +1,2 @@
+A : float [1];
+B = atan(A);

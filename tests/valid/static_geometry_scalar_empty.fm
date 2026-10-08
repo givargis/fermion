@@ -1,0 +1,6 @@
+A : double [2,3];
+S = A[1,2];
+Z : double [0,3];
+B : double [ndim(S)+1,numel(S),ndim(Z),numel(Z),shape(Z,-1)];
+C : double [numel(sum(Z,0)),shape(flatten(Z),0)];
+D : double [ndim(cast<double>(1))+1,numel(cast<double>(1))];
