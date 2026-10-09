@@ -20,7 +20,7 @@ directly from C/C++ programs.
 Fermion also provides a faithful JSON representation of the intermediate
 representation. This makes it straightforward to integrate Fermion into Python
 and other environments by deserializing the IR into native data structures
-such as dictionaries.
+such as dictionaries (e.g., [python/README.md](python/README.MD)).
 
 ## Usage
 
@@ -49,7 +49,7 @@ make
 ```
 
 The converter writes `path/to/kernel.fm.json` and reports errors to standard
-error. Its build also builds the libraries.
+error.
 
 ## Example
 
