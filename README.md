@@ -20,8 +20,7 @@ directly from C/C++ programs.
 Fermion also provides a faithful JSON representation of the intermediate
 representation. This makes it straightforward to integrate Fermion into Python
 and other environments by deserializing the IR into native data structures
-such as dictionaries. A native Python binding is planned for future
-development.
+such as dictionaries.
 
 ## Usage
 

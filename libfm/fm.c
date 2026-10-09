@@ -463,9 +463,8 @@ fm_close(fm_t fm)
 		fm__parser_close(fm->parser);
 		fm__lexer_close(fm->lexer);
 		fm__map_close(fm->map);
-		memset(fm, 0, sizeof (struct fm));
+		free(fm);
 	}
-	free(fm);
 }
 
 int
