@@ -457,7 +457,6 @@ fm_close(fm_t fm)
 			fm->head = node->link;
 			fm__expr_free(node->expr);
 			free((void *)node->name);
-			memset(node, 0, sizeof (struct fm_node));
 			free(node);
 		}
 		fm__parser_close(fm->parser);

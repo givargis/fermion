@@ -82,7 +82,6 @@ destroy(struct node *root)
 		destroy(root->left);
 		destroy(root->right);
 		free(root->key);
-		memset(root, 0, sizeof (struct node));
 		free(root);
 	}
 }

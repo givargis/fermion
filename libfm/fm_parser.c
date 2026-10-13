@@ -2679,9 +2679,8 @@ fm__parser_close(fm__parser_t parser)
 	if (parser) {
 		fm__map_close(parser->map);
 		fm__dag_pool_close(parser->pool);
-		memset(parser, 0, sizeof (struct fm__parser));
+		free(parser);
 	}
-	free(parser);
 }
 
 const struct fm__dag *
