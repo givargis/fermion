@@ -15,8 +15,7 @@ python3 test.py
 ```
 
 See the [repository README](../README.md) for more about building and using
-Fermion. By default, the wrapper loads `libfm/libfm.so` on Linux or
-`libfm/libfm.dylib` on macOS, relative to the location of `libfm.py`.
+Fermion.
 
 ## Usage
 
