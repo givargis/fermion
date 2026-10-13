@@ -1,6 +1,6 @@
 # Tests
 
-Build the shared library from the repository root:
+Build the static and shared library from the repository root:
 
 ```sh
 make -C libfm

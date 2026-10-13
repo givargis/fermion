@@ -24,18 +24,18 @@ such as dictionaries (e.g., [python/README.md](python/README.md)).
 
 ## Usage
 
-Build the static and shared libraries:
+Build the static and shared library from the repository root:
 
 ```sh
-cd path/to/fermion/libfm/
-make
+make -C libfm
 ```
 
-This produces `libfm.a` and either `libfm.so` on Linux or `libfm.dylib` on
-macOS. Include the self-contained public header `libfm/fm.h` and link your
-C/C++ program against one of these libraries. You can use the files in place
-or copy the library and header into your project. When linking the static
-library, place `-lm` after it to resolve its math dependencies.
+This produces `libfm/libfm.a` and either `libfm/libfm.so` on Linux or
+`libfm/libfm.dylib` on macOS. Include the self-contained public header
+`libfm/fm.h` and link your C/C++ program against one of these libraries. You
+can use the files in place or copy the library and header into your project.
+When linking the static library, place `-lm` after it to resolve its math
+dependencies.
 
 Public API names use the `fm_` prefix and names beginning with `fm__` are
 internal.
