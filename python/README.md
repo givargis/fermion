@@ -6,8 +6,7 @@ representation (IR) as JSON, and returns it as Python dictionaries and lists.
 
 ## Setup
 
-You need Python 3 and the Fermion shared library. The wrapper uses only
-Python's standard library and no Python packages need to be installed.
+You need Python 3 and the Fermion shared library.
 
 From the repository root, build the library and run the example:
 
