@@ -12,8 +12,6 @@ Run all tests:
 python3 tests/run.py
 ```
 
-From this directory, use `python3 run.py`.
-
 Valid programs are parsed with the Python `libfm` binding and compared with
 their complete `.json` IR expectations. Invalid programs are checked against
 their `.err` diagnostics.
