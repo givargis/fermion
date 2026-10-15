@@ -22,7 +22,7 @@ representation. This makes it straightforward to integrate Fermion into Python
 and other environments by deserializing the IR into native data structures
 such as dictionaries (e.g., [python/README.md](python/README.md)).
 
-See Fermion's documentation here [docs/README.md](docs/README.md).
+See [docs/README.md](docs/README.md) for Fermion's documentation.
 
 ## Usage
 
@@ -38,9 +38,6 @@ This produces `libfm/libfm.a` and either `libfm/libfm.so` on Linux or
 can use the files in place or copy the library and header into your project.
 When linking the static library, place `-lm` after it to resolve its math
 dependencies.
-
-Public API names use the `fm_` prefix and names beginning with `fm__` are
-internal.
 
 ## Tests
 
