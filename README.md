@@ -40,27 +40,48 @@ dependencies.
 Public API names use the `fm_` prefix and names beginning with `fm__` are
 internal.
 
-To convert a Fermion source file to JSON:
+## Tests
+
+Build the static and shared library from the repository root:
 
 ```sh
-cd path/to/fermion/fm2json/
-make
-./fm2json path/to/kernel.fm
+make -C libfm
 ```
 
-The converter writes `path/to/kernel.fm.json` and reports errors to standard
-error.
+Run all tests:
+
+```sh
+python3 tests/run.py
+```
+
+Valid programs are parsed with the Python `libfm` binding and compared with
+their complete `.json` IR expectations. Invalid programs are checked against
+their `.err` diagnostics.
+
+Each test prints `[PASS]` or `[FAIL]`, followed by total pass/fail counts.
+The exit code is `0` when all tests pass and `1` when any test fails.
+
+Use a different shared library:
+
+```sh
+python3 tests/run.py --libfm /path/to/libfm.so
+```
+
+Run under Valgrind (requires Valgrind in `PATH`):
+
+```sh
+python3 tests/run.py --valgrind
+```
+
+Valgrind diagnostics are suppressed. Memory errors produce exit code `99`,
+even if the printed test counts show all tests passing.
 
 ## Example
 
-See [fm2json/main.c](fm2json/main.c) for a complete example.
+See [fm2json/main.c](fm2json/main.c) for a complete example. This program
+converts a Fermion source file to JSON:
 
-Declare `char errstr[FM_ERRSTR_LEN]` and pass it with a NUL-terminated source
-program string to `fm_open()`. On success, it returns an opaque handle and
-clears `errstr` to an empty string. On failure, it returns `NULL` and writes a
-NUL-terminated diagnostic into the errstr buffer.
-
-Use `fm_json()` to write the parsed representation to a file, or `fm_head()`
-to access the linked list of tensor and compute nodes defined in
-[libfm/fm.h](libfm/fm.h). Call `fm_close()` to release the handle and its
-nodes.
+```sh
+make -C fm2json
+./fm2json/fm2json path/to/kernel.fm
+```
