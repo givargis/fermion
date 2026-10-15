@@ -22,6 +22,8 @@ representation. This makes it straightforward to integrate Fermion into Python
 and other environments by deserializing the IR into native data structures
 such as dictionaries (e.g., [python/README.md](python/README.md)).
 
+See Fermion's documentation here [docs/README.md](docs/README.md).
+
 ## Usage
 
 Build the static and shared library from the repository root:
@@ -53,13 +55,6 @@ Run all tests:
 ```sh
 python3 tests/run.py
 ```
-
-Valid programs are parsed with the Python `libfm` binding and compared with
-their complete `.json` IR expectations. Invalid programs are checked against
-their `.err` diagnostics.
-
-Each test prints `[PASS]` or `[FAIL]`, followed by total pass/fail counts.
-The exit code is `0` when all tests pass and `1` when any test fails.
 
 Use a different shared library:
 
