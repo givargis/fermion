@@ -77,6 +77,8 @@ enum fm__lexer_op {
 };
 
 struct fm__lexer_token {
+	size_t lineno;
+	size_t column;
 	enum fm__lexer_op op;
 	union {
 		int b;

@@ -16,9 +16,10 @@
 #include "fm_lexer.h"
 
 struct fm__lexer {
+	size_t lineno;
+	size_t column;
 	const char *s; /* start */
 	const char *p; /* current */
-	const char *e; /* error */
 	const char *error;
 	struct fm__lexer_token token;
 	struct {
@@ -114,17 +115,33 @@ is_identifier(const char *b, const char *e)
 }
 
 static const char *
-eol(const char *s)
+advance(struct fm__lexer *lexer, const char *s)
+{
+	if ('\r' == *s) {
+		if ('\n' == *++s) {
+			++s;
+		}
+		lexer->lineno += 1;
+		lexer->column  = 1;
+	}
+	else if ('\n' == *s++) {
+		lexer->lineno += 1;
+		lexer->column  = 1;
+	}
+	else {
+		++lexer->column;
+	}
+	return s;
+}
+
+static const char *
+eol(struct fm__lexer *lexer, const char *s)
 {
 	while (*s) {
-		if ('\n' == *s) {
-			return s + 1;
+		if (('\r' == *s) || ('\n' == *s)) {
+			return advance(lexer, s);
 		}
-		if ('\r' == *s) {
-			++s;
-			return ('\n' == *s) ? s + 1 : s;
-		}
-		++s;
+		s = advance(lexer, s);
 	}
 	return s;
 }
@@ -132,8 +149,10 @@ eol(const char *s)
 static const char *
 comment(struct fm__lexer *lexer, const char *s)
 {
+	lexer->column += 2;
 	while (*s) {
 		if (('*' == s[0]) && ('/' == s[1])) {
+			lexer->column += 2;
 			return s + 2;
 		}
 		if (('/' == s[0]) && ('*' == s[1])) {
@@ -141,7 +160,7 @@ comment(struct fm__lexer *lexer, const char *s)
 			FM__TRACE(lexer->error);
 			return NULL;
 		}
-		++s;
+		s = advance(lexer, s);
 	}
 	lexer->error = "unterminated block comment";
 	FM__TRACE(lexer->error);
@@ -153,13 +172,15 @@ skip(struct fm__lexer *lexer, const char *s)
 {
 	for (;;) {
 		if (isspace((unsigned char)*s)) {
-			++s;
+			s = advance(lexer, s);
 		}
 		else if (('/' == s[0]) && ('/' == s[1])) {
-			s = eol(s + 2);
+			lexer->column += 2;
+			s = eol(lexer, s + 2);
 		}
 		else if (('/' == s[0]) && ('*' == s[1])) {
-			lexer->e = s;
+			lexer->token.lineno = lexer->lineno;
+			lexer->token.column = lexer->column;
 			if (!(s = comment(lexer, s + 2))) {
 				FM__TRACE(NULL);
 				return NULL;
@@ -178,7 +199,9 @@ quoted(struct fm__lexer *lexer, const char *s)
 	char delim;
 
 	delim = *s;
-	while (*++s) {
+	++s;
+	++lexer->column;
+	while (*s) {
 		if (('\n' == *s) || ('\r' == *s)) {
 			break;
 		}
@@ -189,10 +212,14 @@ quoted(struct fm__lexer *lexer, const char *s)
 				return NULL;
 			}
 			++s;
+			++lexer->column;
 		}
 		else if (delim == *s) {
+			++lexer->column;
 			return s + 1;
 		}
+		++s;
+		++lexer->column;
 	}
 	lexer->error = ('"' == delim
 			? "unterminated string literal"
@@ -340,6 +367,7 @@ numeric(struct fm__lexer *lexer, const char *s)
 		}
 		lexer->token.op = FM__LEXER_OP_LINT;
 		free(s_);
+		lexer->column += (s - p) + 2;
 		return s;
 	}
 
@@ -364,6 +392,7 @@ numeric(struct fm__lexer *lexer, const char *s)
 				FM__TRACE(lexer->error);
 				return NULL;
 			}
+			lexer->column += (e - p);
 			return e;
 		}
 		if (!isdigit((unsigned char)*s)) {
@@ -387,6 +416,7 @@ numeric(struct fm__lexer *lexer, const char *s)
 	}
 	lexer->token.op = FM__LEXER_OP_LINT;
 	free(s_);
+	lexer->column += (s - p);
 	return s;
 }
 
@@ -579,9 +609,10 @@ fm__lexer_open(const char *s)
 		return NULL;
 	}
 	memset(lexer, 0, sizeof (struct fm__lexer));
+	lexer->lineno = 1;
+	lexer->column = 1;
 	lexer->s = s;
 	lexer->p = s;
-	lexer->e = s;
 	index(lexer);
 	return lexer;
 }
@@ -603,13 +634,18 @@ fm__lexer_next(fm__lexer_t lexer)
 
 	assert( lexer );
 
+	if (!lexer->p) {
+		FM__TRACE(NULL);
+		return NULL;
+	}
 	reset(lexer);
-	if (!lexer->p || !(s = skip(lexer, lexer->p))) {
+	if (!(s = skip(lexer, lexer->p))) {
 		lexer->p = NULL;
 		FM__TRACE(NULL);
 		return NULL;
 	}
-	lexer->e = s;
+	lexer->token.lineno = lexer->lineno;
+	lexer->token.column = lexer->column;
 
 	/* eof */
 
@@ -666,6 +702,7 @@ fm__lexer_next(fm__lexer_t lexer)
 	if ((n = operator(s, &op))) {
 		lexer->token.op = op;
 		lexer->p = s + n;
+		lexer->column += n;
 		return &lexer->token;
 	}
 
@@ -680,6 +717,7 @@ fm__lexer_next(fm__lexer_t lexer)
 	       ('\'' != *s) &&
 	       ('\"' != *s) &&
 	       !operator(s, &op));
+	lexer->column += (s - p);
 	if ((op = lookup(lexer, p, s))) {
 		if (FM__LEXER_OP_TRUE == op) {
 			lexer->token.op = FM__LEXER_OP_LBOOL;
@@ -720,29 +758,9 @@ fm__lexer_next(fm__lexer_t lexer)
 const char *
 fm__lexer_error(fm__lexer_t lexer, size_t *lineno, size_t *column)
 {
-	const char *s;
-
 	assert( lexer && lineno && column );
 
-	*lineno = 1;
-	*column = 1;
-	s = lexer->s;
-	while (s < lexer->e) {
-		if ('\r' == *s) {
-			++s;
-			if ('\n' == *s) {
-				++s;
-			}
-			*lineno += 1;
-			*column = 1;
-		}
-		else if ('\n' == *s++) {
-			*lineno += 1;
-			*column = 1;
-		}
-		else {
-			*column += 1;
-		}
-	}
+	*lineno = lexer->token.lineno;
+	*column = lexer->token.column;
 	return lexer->error;
 }
