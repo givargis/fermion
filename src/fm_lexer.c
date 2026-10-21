@@ -31,8 +31,9 @@ static const struct {
 	const char *s;
 	enum fm__lexer_op op;
 } KEYWORDS[] = {
-	{ "binary",        FM__LEXER_OP_BINARY    },
-	{ "ternary",       FM__LEXER_OP_TERNARY   },
+	{ "true",          FM__LEXER_OP_TRUE      },
+	{ "false",         FM__LEXER_OP_FALSE     },
+	{ "bool",          FM__LEXER_OP_BOOL      },
 	{ "byte",          FM__LEXER_OP_BYTE      },
 	{ "short",         FM__LEXER_OP_SHORT     },
 	{ "int",           FM__LEXER_OP_INT       },
@@ -680,6 +681,18 @@ fm__lexer_next(fm__lexer_t lexer)
 	       ('\"' != *s) &&
 	       !operator(s, &op));
 	if ((op = lookup(lexer, p, s))) {
+		if (FM__LEXER_OP_TRUE == op) {
+			lexer->token.op = FM__LEXER_OP_LBOOL;
+			lexer->token.u.b = 1;
+			lexer->p = s;
+			return &lexer->token;
+		}
+		if (FM__LEXER_OP_FALSE == op) {
+			lexer->token.op = FM__LEXER_OP_LBOOL;
+			lexer->token.u.b = 0;
+			lexer->p = s;
+			return &lexer->token;
+		}
 		lexer->token.op = op;
 		lexer->p = s;
 		return &lexer->token;

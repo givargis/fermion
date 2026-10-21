@@ -14,6 +14,7 @@ enum fm__lexer_op {
 	FM__LEXER_OP_EOF,
 	FM__LEXER_OP_LINT,       /* u.i */
 	FM__LEXER_OP_LREAL,      /* u.r */
+	FM__LEXER_OP_LBOOL,      /* u.b */
 	FM__LEXER_OP_LSTRING,    /* u.s */
 	FM__LEXER_OP_IDENTIFIER, /* u.s */
 	FM__LEXER_OP_OPENBRACE,
@@ -50,8 +51,9 @@ enum fm__lexer_op {
 	FM__LEXER_OP_EQ,
 	FM__LEXER_OP_NE,
 	FM__LEXER_OP_ASSIGN,
-	FM__LEXER_OP_BINARY,
-	FM__LEXER_OP_TERNARY,
+	FM__LEXER_OP_TRUE,  /* -> LBOOL */
+	FM__LEXER_OP_FALSE, /* -> LBOOL */
+	FM__LEXER_OP_BOOL,
 	FM__LEXER_OP_BYTE,
 	FM__LEXER_OP_SHORT,
 	FM__LEXER_OP_INT,
@@ -77,6 +79,7 @@ enum fm__lexer_op {
 struct fm__lexer_token {
 	enum fm__lexer_op op;
 	union {
+		int b;
 		double r;
 		const char *s;
 		fm__bigint_t i;
