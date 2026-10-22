@@ -13,9 +13,24 @@
 #include "fm_lexer.h"
 #include "fm_parser.h"
 
+#define STACK_SIZE 128
+
 struct fm__parser {
+	int stop; /* bool */
+	size_t top;
 	fm__lexer_t lexer;
+	struct fm__lexer_token stack[STACK_SIZE];
 };
+
+void
+push(struct fm__parser *parser, const struct fm__lexer_token *token)
+{
+	if (parser->stop || (STACK_SIZE <= parser->top)) {
+		parser->stop = 1;
+
+	}
+	parser->ok = 0;
+}
 
 static int
 parse(struct fm__parser *parser)
@@ -34,7 +49,9 @@ parse(struct fm__parser *parser)
 			FM__TRACE(NULL);
 			return -1;
 		}
-		printf("op=%d u.s=[%s]\n",
+		printf("%lu:%lu: op=%d u.s=[%s]\n",
+		       (unsigned long)token->lineno,
+		       (unsigned long)token->column,
 		       token->op,
 		       token->op == FM__LEXER_OP_IDENTIFIER ? token->u.s : "");
 	}

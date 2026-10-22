@@ -18,10 +18,12 @@ OBJS := $(SRCS:.c=.o)
 all: $(DEST)
 
 $(DEST): $(OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	@echo "[LN] $<"
+	@$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -MMD -MP -c $<
+	@echo "[CC] $<"
+	@$(CC) $(CFLAGS) -MMD -MP -c $<
 
 clean:
 	rm -f $(DEST) *.so *.a *.o *.d *~
