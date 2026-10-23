@@ -22,16 +22,6 @@ struct fm__parser {
 	struct fm__lexer_token stack[STACK_SIZE];
 };
 
-void
-push(struct fm__parser *parser, const struct fm__lexer_token *token)
-{
-	if (parser->stop || (STACK_SIZE <= parser->top)) {
-		parser->stop = 1;
-
-	}
-	parser->ok = 0;
-}
-
 static int
 parse(struct fm__parser *parser)
 {

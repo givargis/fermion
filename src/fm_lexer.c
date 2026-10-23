@@ -55,8 +55,7 @@ static const struct {
 	{ "uniform",       FM__LEXER_OP_UNIFORM   },
 	{ "broadcast",     FM__LEXER_OP_BROADCAST },
 	{ "reshape",       FM__LEXER_OP_RESHAPE   },
-	{ "zeros",         FM__LEXER_OP_ZEROS     },
-	{ ".seed",         FM__LEXER_OP_DOTSEED   }
+	{ "zeros",         FM__LEXER_OP_ZEROS     }
 };
 
 static int
@@ -434,8 +433,10 @@ operator(const char *s, int *op)
 	case ':': *op = FM__LEXER_OP_COLON; return 1;
 	case ',': *op = FM__LEXER_OP_COMMA; return 1;
 	case ';': *op = FM__LEXER_OP_SEMICOLON; return 1;
-	case '@': *op = FM__LEXER_OP_AT; return 1;
 	case '`': *op = FM__LEXER_OP_BACKTICK; return 1;
+	case '@': *op = FM__LEXER_OP_AT; return 1;
+	case '#': *op = FM__LEXER_OP_HASH; return 1;
+	case '$': *op = FM__LEXER_OP_DOLLAR; return 1;
 	case '+': *op = FM__LEXER_OP_ADD; return 1;
 	case '-': *op = FM__LEXER_OP_SUB; return 1;
 	case '*': *op = FM__LEXER_OP_MUL; return 1;
