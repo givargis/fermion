@@ -26,4 +26,6 @@ int fm__utils_mul_int64(int64_t a, int64_t b, int64_t *z);
 
 void fm__utils_mul_uint128(uint64_t a, uint64_t b, uint64_t *h, uint64_t *l);
 
+void fm__utils_sprintf(char *buf, size_t size, const char *format, ...);
+
 #endif

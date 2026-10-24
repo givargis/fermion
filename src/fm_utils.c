@@ -4,7 +4,10 @@
  * fm_utils.h
  */
 
+#include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <assert.h>
 
 #include "fm_errno.h"
@@ -13,7 +16,7 @@
 void
 fm__utils_init(void)
 {
-	if (8 > sizeof (long)) {
+	if ((8 > sizeof (long)) || (INT_MAX > SIZE_MAX)) {
 		FM__ERRNO(FM__ERRNO_ARCHITECTURE);
 		abort();
 	}
@@ -115,4 +118,21 @@ fm__utils_mul_uint128(uint64_t a, uint64_t b, uint64_t *h, uint64_t *l)
 	*h = t4;
 	*l = (t3 << 32) | (t1 & 0xffffffff);
 #endif
+}
+
+void
+fm__utils_sprintf(char *buf, size_t size, const char *format, ...)
+{
+	va_list ap;
+	int n;
+
+	assert( buf && format );
+
+	va_start(ap, format);
+	n = vsnprintf(buf, size, format, ap);
+	va_end(ap);
+	if ((0 > n) || (size <= (size_t)n)) {
+		FM__ERRNO(FM__ERRNO_SOFTWARE);
+		abort();
+	}
 }

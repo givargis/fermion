@@ -63,6 +63,91 @@ hex2int(int c)
 	return -1;
 }
 
+static int
+operator(const char *s, int *op)
+{
+	switch (*s) {
+	case '{': *op = FM__LEXER_OP_OPENBRACE; return 1;
+	case '}': *op = FM__LEXER_OP_CLOSEBRACE; return 1;
+	case '[': *op = FM__LEXER_OP_OPENBRACKET; return 1;
+	case ']': *op = FM__LEXER_OP_CLOSEBRACKET; return 1;
+	case '(': *op = FM__LEXER_OP_OPENPAREN; return 1;
+	case ')': *op = FM__LEXER_OP_CLOSEPAREN; return 1;
+	case '?': *op = FM__LEXER_OP_QUESTION; return 1;
+	case ':': *op = FM__LEXER_OP_COLON; return 1;
+	case ',': *op = FM__LEXER_OP_COMMA; return 1;
+	case ';': *op = FM__LEXER_OP_SEMICOLON; return 1;
+	case '`': *op = FM__LEXER_OP_BACKTICK; return 1;
+	case '@': *op = FM__LEXER_OP_AT; return 1;
+	case '#': *op = FM__LEXER_OP_HASH; return 1;
+	case '$': *op = FM__LEXER_OP_DOLLAR; return 1;
+	case '+': *op = FM__LEXER_OP_ADD; return 1;
+	case '-': *op = FM__LEXER_OP_SUB; return 1;
+	case '*': *op = FM__LEXER_OP_MUL; return 1;
+	case '/': *op = FM__LEXER_OP_DIV; return 1;
+	case '%': *op = FM__LEXER_OP_MOD; return 1;
+	case '~': *op = FM__LEXER_OP_NOT; return 1;
+	case '!':
+		if ('=' == s[1]) {
+			*op = FM__LEXER_OP_NE;
+			return 2;
+		}
+		*op = FM__LEXER_OP_LOGNOT;
+		return 1;
+	case '<':
+		if ('<' == s[1]) {
+			*op = FM__LEXER_OP_SHL;
+			return 2;
+		}
+		if ('=' == s[1]) {
+			*op = FM__LEXER_OP_LE;
+			return 2;
+		}
+		*op = FM__LEXER_OP_LT;
+		return 1;
+	case '>':
+		if ('>' == s[1]) {
+			*op = FM__LEXER_OP_SHR;
+			return 2;
+		}
+		if ('=' == s[1]) {
+			*op = FM__LEXER_OP_GE;
+			return 2;
+		}
+		*op = FM__LEXER_OP_GT;
+		return 1;
+	case '&':
+		if ('&' == s[1]) {
+			*op = FM__LEXER_OP_LOGAND;
+			return 2;
+		}
+		*op = FM__LEXER_OP_AND;
+		return 1;
+	case '^':
+		if ('^' == s[1]) {
+			*op = FM__LEXER_OP_LOGXOR;
+			return 2;
+		}
+		*op = FM__LEXER_OP_XOR;
+		return 1;
+	case '|':
+		if ('|' == s[1]) {
+			*op = FM__LEXER_OP_LOGOR;
+			return 2;
+		}
+		*op = FM__LEXER_OP_OR;
+		return 1;
+	case '=':
+		if ('=' == s[1]) {
+			*op = FM__LEXER_OP_EQ;
+			return 2;
+		}
+		*op = FM__LEXER_OP_ASSIGN;
+		return 1;
+	}
+	return 0;
+}
+
 static size_t
 hash(const char *b, const char *e)
 {
@@ -92,7 +177,7 @@ strdupl(const char *b, const char *e)
 }
 
 static int /* bool */
-is_identifier(const char *b, const char *e)
+identifier(const char *b, const char *e)
 {
 	if (('_' == *b) || isalpha((unsigned char)*b)) {
 		while (++b < e) {
@@ -103,6 +188,43 @@ is_identifier(const char *b, const char *e)
 		return 1;
 	}
 	return 0;
+}
+
+static const char *
+escape(const char *b, const char *e, unsigned char *c)
+{
+	int h, l;
+
+	if (++b < e) {
+		switch (*b++) {
+		case '0' : *c = '\0'; break;
+		case 'a' : *c = '\a'; break;
+		case 'b' : *c = '\b'; break;
+		case 'f' : *c = '\f'; break;
+		case 'n' : *c = '\n'; break;
+		case 'r' : *c = '\r'; break;
+		case 't' : *c = '\t'; break;
+		case 'v' : *c = '\v'; break;
+		case '\\': *c = '\\'; break;
+		case '\'': *c = '\''; break;
+		case '"' : *c = '"';  break;
+		case 'x' :
+			if (2 > (e - b)) {
+				return NULL;
+			}
+			h = hex2int((unsigned char)b[0]);
+			l = hex2int((unsigned char)b[1]);
+			if ((0 > h) || (0 > l)) {
+				return NULL;
+			}
+			*c = (unsigned char)((h << 4) | l);
+			return b + 2;
+		default:
+			return NULL;
+		}
+		return b;
+	}
+	return NULL;
 }
 
 static const char *
@@ -216,43 +338,6 @@ quoted(struct fm__lexer *lexer, const char *s)
 			? "unterminated string literal"
 			: "unterminated character literal");
 	FM__ERRNO(FM__ERRNO_SYNTAX);
-	return NULL;
-}
-
-static const char *
-escape(const char *b, const char *e, unsigned char *c)
-{
-	int h, l;
-
-	if (++b < e) {
-		switch (*b++) {
-		case '0' : *c = '\0'; break;
-		case 'a' : *c = '\a'; break;
-		case 'b' : *c = '\b'; break;
-		case 'f' : *c = '\f'; break;
-		case 'n' : *c = '\n'; break;
-		case 'r' : *c = '\r'; break;
-		case 't' : *c = '\t'; break;
-		case 'v' : *c = '\v'; break;
-		case '\\': *c = '\\'; break;
-		case '\'': *c = '\''; break;
-		case '"' : *c = '"';  break;
-		case 'x' :
-			if (2 > (e - b)) {
-				return NULL;
-			}
-			h = hex2int((unsigned char)b[0]);
-			l = hex2int((unsigned char)b[1]);
-			if ((0 > h) || (0 > l)) {
-				return NULL;
-			}
-			*c = (unsigned char)((h << 4) | l);
-			return b + 2;
-		default:
-			return NULL;
-		}
-		return b;
-	}
 	return NULL;
 }
 
@@ -413,91 +498,6 @@ numeric(struct fm__lexer *lexer, const char *s)
 	free(s_);
 	lexer->column += (s - p);
 	return s;
-}
-
-static int
-operator(const char *s, int *op)
-{
-	switch (*s) {
-	case '{': *op = FM__LEXER_OP_OPENBRACE; return 1;
-	case '}': *op = FM__LEXER_OP_CLOSEBRACE; return 1;
-	case '[': *op = FM__LEXER_OP_OPENBRACKET; return 1;
-	case ']': *op = FM__LEXER_OP_CLOSEBRACKET; return 1;
-	case '(': *op = FM__LEXER_OP_OPENPAREN; return 1;
-	case ')': *op = FM__LEXER_OP_CLOSEPAREN; return 1;
-	case '?': *op = FM__LEXER_OP_QUESTION; return 1;
-	case ':': *op = FM__LEXER_OP_COLON; return 1;
-	case ',': *op = FM__LEXER_OP_COMMA; return 1;
-	case ';': *op = FM__LEXER_OP_SEMICOLON; return 1;
-	case '`': *op = FM__LEXER_OP_BACKTICK; return 1;
-	case '@': *op = FM__LEXER_OP_AT; return 1;
-	case '#': *op = FM__LEXER_OP_HASH; return 1;
-	case '$': *op = FM__LEXER_OP_DOLLAR; return 1;
-	case '+': *op = FM__LEXER_OP_ADD; return 1;
-	case '-': *op = FM__LEXER_OP_SUB; return 1;
-	case '*': *op = FM__LEXER_OP_MUL; return 1;
-	case '/': *op = FM__LEXER_OP_DIV; return 1;
-	case '%': *op = FM__LEXER_OP_MOD; return 1;
-	case '~': *op = FM__LEXER_OP_NOT; return 1;
-	case '!':
-		if ('=' == s[1]) {
-			*op = FM__LEXER_OP_NE;
-			return 2;
-		}
-		*op = FM__LEXER_OP_LOGNOT;
-		return 1;
-	case '<':
-		if ('<' == s[1]) {
-			*op = FM__LEXER_OP_SHL;
-			return 2;
-		}
-		if ('=' == s[1]) {
-			*op = FM__LEXER_OP_LE;
-			return 2;
-		}
-		*op = FM__LEXER_OP_LT;
-		return 1;
-	case '>':
-		if ('>' == s[1]) {
-			*op = FM__LEXER_OP_SHR;
-			return 2;
-		}
-		if ('=' == s[1]) {
-			*op = FM__LEXER_OP_GE;
-			return 2;
-		}
-		*op = FM__LEXER_OP_GT;
-		return 1;
-	case '&':
-		if ('&' == s[1]) {
-			*op = FM__LEXER_OP_LOGAND;
-			return 2;
-		}
-		*op = FM__LEXER_OP_AND;
-		return 1;
-	case '^':
-		if ('^' == s[1]) {
-			*op = FM__LEXER_OP_LOGXOR;
-			return 2;
-		}
-		*op = FM__LEXER_OP_XOR;
-		return 1;
-	case '|':
-		if ('|' == s[1]) {
-			*op = FM__LEXER_OP_LOGOR;
-			return 2;
-		}
-		*op = FM__LEXER_OP_OR;
-		return 1;
-	case '=':
-		if ('=' == s[1]) {
-			*op = FM__LEXER_OP_EQ;
-			return 2;
-		}
-		*op = FM__LEXER_OP_ASSIGN;
-		return 1;
-	}
-	return 0;
 }
 
 static void
@@ -735,7 +735,7 @@ fm__lexer_next(fm__lexer_t lexer)
 
 	/* identifier? */
 
-	if (!is_identifier(p, s)) {
+	if (!identifier(p, s)) {
 		lexer->p = NULL;
 		lexer->error = "unrecognized token";
 		FM__ERRNO(FM__ERRNO_SYNTAX);
