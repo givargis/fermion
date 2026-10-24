@@ -8,7 +8,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "fm_trace.h"
+#include "fm_errno.h"
 #include "fm_map.h"
 
 struct fm__map {
@@ -98,7 +98,7 @@ update(struct node *root, const char *key, void *val)
 
 	if (!root) {
 		if (!(root = malloc(sizeof (struct node)))) {
-			FM__TRACE("out of memory");
+			FM__ERRNO(FM__ERRNO_MEMORY);
 			return NULL;
 		}
 		memset(root, 0, sizeof (struct node));
@@ -106,7 +106,7 @@ update(struct node *root, const char *key, void *val)
 		root->right = NULL;
 		if (!(root->key = malloc(strlen(key) + 1))) {
 			free(root);
-			FM__TRACE("out of memory");
+			FM__ERRNO(FM__ERRNO_MEMORY);
 			return NULL;
 		}
 		strcpy(root->key, key);
@@ -119,7 +119,7 @@ update(struct node *root, const char *key, void *val)
 	}
 	if (0 > d) {
 		if (!(node = update(root->left, key, val))) {
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		root->left = node;
@@ -134,7 +134,7 @@ update(struct node *root, const char *key, void *val)
 	}
 	else {
 		if (!(node = update(root->right, key, val))) {
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		root->right = node;
@@ -157,7 +157,7 @@ fm__map_open(void)
 	struct fm__map *map;
 
 	if (!(map = malloc(sizeof (struct fm__map)))) {
-		FM__TRACE("out of memory");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	memset(map, 0, sizeof (struct fm__map));
@@ -182,7 +182,7 @@ fm__map_update(fm__map_t map, const char *key, void *val)
 	assert( map && key && *key );
 
 	if (!(root = update(map->root, key, val))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return -1;
 	}
 	map->root = root;

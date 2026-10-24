@@ -12,7 +12,7 @@
 #include <limits.h>
 #include <assert.h>
 
-#include "fm_trace.h"
+#include "fm_errno.h"
 #include "fm_lexer.h"
 
 struct fm__lexer {
@@ -47,15 +47,7 @@ static const struct {
 	{ "fp64",          FM__LEXER_OP_FP64      },
 	{ "float",         FM__LEXER_OP_FP32      },
 	{ "double",        FM__LEXER_OP_FP64      },
-	{ "unsigned",      FM__LEXER_OP_UNSIGNED  },
-	{ "cast",          FM__LEXER_OP_CAST      },
-	{ "ones",          FM__LEXER_OP_ONES      },
-	{ "iota",          FM__LEXER_OP_IOTA      },
-	{ "normal",        FM__LEXER_OP_NORMAL    },
-	{ "uniform",       FM__LEXER_OP_UNIFORM   },
-	{ "broadcast",     FM__LEXER_OP_BROADCAST },
-	{ "reshape",       FM__LEXER_OP_RESHAPE   },
-	{ "zeros",         FM__LEXER_OP_ZEROS     }
+	{ "unsigned",      FM__LEXER_OP_UNSIGNED  }
 };
 
 static int
@@ -91,7 +83,7 @@ strdupl(const char *b, const char *e)
 
 	n = e - b;
 	if (!(s = malloc(n + 1))) {
-		FM__TRACE("out of memory");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	memcpy(s, b, n);
@@ -156,13 +148,13 @@ comment(struct fm__lexer *lexer, const char *s)
 		}
 		if (('/' == s[0]) && ('*' == s[1])) {
 			lexer->error = "'/*' within block comment";
-			FM__TRACE(lexer->error);
+			FM__ERRNO(FM__ERRNO_SYNTAX);
 			return NULL;
 		}
 		s = advance(lexer, s);
 	}
 	lexer->error = "unterminated block comment";
-	FM__TRACE(lexer->error);
+	FM__ERRNO(FM__ERRNO_SYNTAX);
 	return NULL;
 }
 
@@ -181,7 +173,7 @@ skip(struct fm__lexer *lexer, const char *s)
 			lexer->token.lineno = lexer->lineno;
 			lexer->token.column = lexer->column;
 			if (!(s = comment(lexer, s + 2))) {
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return NULL;
 			}
 		}
@@ -207,7 +199,7 @@ quoted(struct fm__lexer *lexer, const char *s)
 		else if ('\\' == *s) {
 			if (('\n' == s[1]) || ('\r' == s[1]) || !s[1]) {
 				lexer->error = "invalid escape sequence";
-				FM__TRACE(lexer->error);
+				FM__ERRNO(FM__ERRNO_SYNTAX);
 				return NULL;
 			}
 			++s;
@@ -223,7 +215,7 @@ quoted(struct fm__lexer *lexer, const char *s)
 	lexer->error = ('"' == delim
 			? "unterminated string literal"
 			: "unterminated character literal");
-	FM__TRACE(lexer->error);
+	FM__ERRNO(FM__ERRNO_SYNTAX);
 	return NULL;
 }
 
@@ -272,7 +264,7 @@ character(struct fm__lexer *lexer, const char *b, const char *e)
 
 	if (++b >= --e) {
 		lexer->error = "invalid character literal";
-		FM__TRACE(lexer->error);
+		FM__ERRNO(FM__ERRNO_SYNTAX);
 		return -1;
 	}
 	if ('\\' == *b) {
@@ -284,12 +276,12 @@ character(struct fm__lexer *lexer, const char *b, const char *e)
 	}
 	if (!p || (p != e)) {
 		lexer->error = "invalid character literal";
-		FM__TRACE(lexer->error);
+		FM__ERRNO(FM__ERRNO_SYNTAX);
 		return -1;
 	}
 	if (!(lexer->token.u.i = fm__bigint_int(c))) {
 		lexer->error = "out of memory";
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return -1;
 	}
 	return 0;
@@ -304,7 +296,7 @@ string(struct fm__lexer *lexer, const char *b, const char *e)
 
 	if (!(s = malloc(e - b - 1))) {
 		lexer->error = "out of memory";
-		FM__TRACE(lexer->error);
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	++b;
@@ -315,14 +307,14 @@ string(struct fm__lexer *lexer, const char *b, const char *e)
 			if (!(p = escape(b, e, &c))) {
 				free(s);
 				lexer->error = "invalid escape sequence";
-				FM__TRACE(lexer->error);
+				FM__ERRNO(FM__ERRNO_SYNTAX);
 				return NULL;
 			}
 			b = p;
 			if (!c) {
 				free(s);
 				lexer->error = "NUL within string literal";
-				FM__TRACE(lexer->error);
+				FM__ERRNO(FM__ERRNO_SYNTAX);
 				return NULL;
 			}
 		}
@@ -350,18 +342,20 @@ numeric(struct fm__lexer *lexer, const char *s)
 		}
 		if (p == s) {
 			lexer->error = "invalid integer literal";
-			FM__TRACE(lexer->error);
+			FM__ERRNO(FM__ERRNO_SYNTAX);
 			return NULL;
 		}
 		if (!(s_ = strdupl(p - 2, s))) {
 			lexer->error = "out of memory";
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		if (!(lexer->token.u.i = fm__bigint_string(s_))) {
 			free(s_);
-			lexer->error = "integer literal conversion failed";
-			FM__TRACE(NULL);
+			lexer->error = (FM__ERRNO_ARGUMENTS == errno
+					? "integer literal conversion failed"
+					: "out of memory");
+			FM__ERRNO(0);
 			return NULL;
 		}
 		lexer->token.op = FM__LEXER_OP_LINT;
@@ -380,15 +374,15 @@ numeric(struct fm__lexer *lexer, const char *s)
 			lexer->token.u.r = strtod(p, &e);
 			if ((e <= s) ||
 			    ('e' == *e) || ('E' == *e)) {
-				lexer->error = ("invalid floating-point "
-						"literal");
-				FM__TRACE(lexer->error);
+				lexer->error =
+					"invalid floating-point literal";
+				FM__ERRNO(0);
 				return NULL;
 			}
 			if (ERANGE == errno) {
-				lexer->error = ("floating-point literal "
-						"out of range");
-				FM__TRACE(lexer->error);
+				lexer->error =
+					"floating-point literal out of range";
+				FM__ERRNO(0);
 				return NULL;
 			}
 			lexer->column += (e - p);
@@ -404,13 +398,15 @@ numeric(struct fm__lexer *lexer, const char *s)
 
 	if (!(s_ = strdupl(p, s))) {
 		lexer->error = "out of memory";
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (!(lexer->token.u.i = fm__bigint_string(s_))) {
 		free(s_);
-		lexer->error = "integer literal conversion failed";
-		FM__TRACE(NULL);
+		lexer->error = (FM__ERRNO_ARGUMENTS == errno
+				? "integer literal conversion failed"
+				: "out of memory");
+		FM__ERRNO(0);
 		return NULL;
 	}
 	lexer->token.op = FM__LEXER_OP_LINT;
@@ -518,7 +514,7 @@ reset(struct fm__lexer *lexer)
 }
 
 static void
-index(struct fm__lexer *lexer)
+dictionary(struct fm__lexer *lexer)
 {
 	const size_t M = sizeof (lexer->maps) / sizeof (lexer->maps[0]);
 	const size_t N = sizeof (KEYWORDS) / sizeof (KEYWORDS[0]);
@@ -540,7 +536,7 @@ index(struct fm__lexer *lexer)
 			}
 		}
 		if (M <= j) {
-			FM__TRACE("keyword table full");
+			FM__ERRNO(FM__ERRNO_SOFTWARE);
 			abort();
 		}
 	}
@@ -587,12 +583,12 @@ fm__lexer_init(void)
 	    ('\v' != 11) ||
 	    ('\f' != 12) ||
 	    ('\r' != 13)) {
-		FM__TRACE("unsupported architecture");
+		FM__ERRNO(FM__ERRNO_ARCHITECTURE);
 		abort();
 	}
 	for (i=0; i<(sizeof (ASCII) - 1); ++i) {
 		if ((32 + i) != (unsigned char)ASCII[i]) {
-			FM__TRACE("unsupported architecture");
+			FM__ERRNO(FM__ERRNO_ARCHITECTURE);
 			abort();
 		}
 	}
@@ -606,7 +602,7 @@ fm__lexer_open(const char *s)
 	assert( s );
 
 	if (!(lexer = malloc(sizeof (struct fm__lexer)))) {
-		FM__TRACE("out of memory");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	memset(lexer, 0, sizeof (struct fm__lexer));
@@ -614,7 +610,7 @@ fm__lexer_open(const char *s)
 	lexer->column = 1;
 	lexer->s = s;
 	lexer->p = s;
-	index(lexer);
+	dictionary(lexer);
 	return lexer;
 }
 
@@ -636,13 +632,13 @@ fm__lexer_next(fm__lexer_t lexer)
 	assert( lexer );
 
 	if (!lexer->p) {
-		FM__TRACE(NULL);
+		FM__ERRNO(FM__ERRNO_ARGUMENTS);
 		return NULL;
 	}
 	reset(lexer);
 	if (!(s = skip(lexer, lexer->p))) {
 		lexer->p = NULL;
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	lexer->token.lineno = lexer->lineno;
@@ -662,7 +658,7 @@ fm__lexer_next(fm__lexer_t lexer)
 		p = s;
 		if (!(s = quoted(lexer, s)) || character(lexer, p, s)) {
 			lexer->p = NULL;
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		lexer->token.op = FM__LEXER_OP_LINT;
@@ -677,7 +673,7 @@ fm__lexer_next(fm__lexer_t lexer)
 		if (!(s = quoted(lexer, s)) ||
 		    !(lexer->token.u.s = string(lexer, p, s))) {
 			lexer->p = NULL;
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		lexer->token.op = FM__LEXER_OP_LSTRING;
@@ -691,7 +687,7 @@ fm__lexer_next(fm__lexer_t lexer)
 	    (('.' == s[0]) && isdigit((unsigned char)s[1]))) {
 		if (!(s = numeric(lexer, s))) {
 			lexer->p = NULL;
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		lexer->p = s;
@@ -742,13 +738,13 @@ fm__lexer_next(fm__lexer_t lexer)
 	if (!is_identifier(p, s)) {
 		lexer->p = NULL;
 		lexer->error = "unrecognized token";
-		FM__TRACE(lexer->error);
+		FM__ERRNO(FM__ERRNO_SYNTAX);
 		return NULL;
 	}
 	if (!(lexer->token.u.s = strdupl(p, s))) {
 		lexer->p = NULL;
 		lexer->error = "out of memory";
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	lexer->token.op = FM__LEXER_OP_IDENTIFIER;

@@ -13,7 +13,8 @@
 #include <limits.h>
 #include <assert.h>
 
-#include "fm_trace.h"
+#include "fm_errno.h"
+#include "fm_utils.h"
 #include "fm_bigint.h"
 
 #define MAX_PARTS_ ( 16384 )
@@ -64,11 +65,11 @@ create(int width)
 	struct fm__bigint *z;
 
 	if (MAX_PARTS_ < width) {
-		FM__TRACE("bigint too large");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	if (!(z = malloc(sizeof (struct fm__bigint)))) {
-		FM__TRACE("out of memory");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	memset(z, 0, sizeof (struct fm__bigint));
@@ -76,7 +77,7 @@ create(int width)
 	if ((z->width = width)) {
 		if (!(z->parts = malloc(z->width * sizeof (z->parts[0])))) {
 			destroy(z);
-			FM__TRACE("out of memory");
+			FM__ERRNO(FM__ERRNO_MEMORY);
 			return NULL;
 		}
 	}
@@ -89,7 +90,7 @@ clone(const struct fm__bigint *a)
 	struct fm__bigint *z;
 
 	if (!(z = create(a->width))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	z->sign = a->sign;
@@ -118,7 +119,7 @@ finalize(struct fm__bigint *z)
 	if (z) {
 		if (MAX_PARTS < z->width) {
 			destroy(z);
-			FM__TRACE("bigint too large");
+			FM__ERRNO(FM__ERRNO_MEMORY);
 			return NULL;
 		}
 	}
@@ -184,7 +185,7 @@ uadd(const struct fm__bigint *a, const struct fm__bigint *b)
 
 	c = 0;
 	if (!(z = create(MAX(a->width, b->width) + 1))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	for (i=0; i<z->width; ++i) {
@@ -207,7 +208,7 @@ usub(const struct fm__bigint *a, const struct fm__bigint *b)
 
 	c = 0;
 	if (!(z = create(a->width))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	for (i=0; i<z->width; ++i) {
@@ -229,7 +230,7 @@ add(const struct fm__bigint *a, const struct fm__bigint *b)
 
 	if (a->sign == b->sign) {
 		if (!(z = uadd(a, b))) {
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		z->sign = a->sign;
@@ -237,20 +238,20 @@ add(const struct fm__bigint *a, const struct fm__bigint *b)
 	else {
 		if (!(d = magnitude(a, b))) {
 			if (!(z = create(0))) {
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return NULL;
 			}
 		}
 		else if (0 < d) {
 			if (!(z = usub(a, b))) {
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return NULL;
 			}
 			z->sign = a->sign;
 		}
 		else {
 			if (!(z = usub(b, a))) {
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return NULL;
 			}
 			z->sign = b->sign;
@@ -267,39 +268,10 @@ sub(const struct fm__bigint *a, const struct fm__bigint *b_)
 	b = *b_;
 	b.sign = IS_ZERO(b_) ? 0 : (b_->sign ? 0 : 1);
 	if (!(z = add(a, &b))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	return z;
-}
-
-static void
-mul128(uint64_t a, uint64_t b, uint64_t *h, uint64_t *l)
-{
-#ifdef __SIZEOF_INT128__
-	__uint128_t t = (__uint128_t)a * (__uint128_t)b;
-
-	*h = (uint64_t)(t >> 64);
-	*l = (uint64_t)t;
-#else
-	uint64_t ah = a >> 32;
-	uint64_t al = a & 0xffffffff;
-	uint64_t bh = b >> 32;
-	uint64_t bl = b & 0xffffffff;
-	uint64_t t1 = bl * al;
-	uint64_t t2 = bl * ah;
-	uint64_t t3 = bh * al;
-	uint64_t t4 = bh * ah;
-
-	t2 += t1 >> 32;
-	t3 += t2;
-	if (t3 < t2) {
-		t4 += (uint64_t)1 << 32;
-	}
-	t4 += t3 >> 32;
-	*h = t4;
-	*l = (t3 << 32) | (t1 & 0xffffffff);
-#endif
 }
 
 static struct fm__bigint *
@@ -310,7 +282,7 @@ mul(const struct fm__bigint *a, const struct fm__bigint *b)
 	int i, j, k;
 
 	if (!(z = create(a->width + b->width))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (z->width) {
@@ -318,7 +290,10 @@ mul(const struct fm__bigint *a, const struct fm__bigint *b)
 	}
 	for (i=0; i<a->width; ++i) {
 		for (j=0; j<b->width; ++j) {
-			mul128(a->parts[i], b->parts[j], &h, &l);
+			fm__utils_mul_uint128(a->parts[i],
+					      b->parts[j],
+					      &h,
+					      &l);
 			z->parts[i + j] += l;
 			if (z->parts[i + j] < l) {
 				k = i + j + 1;
@@ -353,7 +328,7 @@ slow_divmod(const struct fm__bigint *a,
 			destroy(*r);
 			*q = NULL;
 			*r = NULL;
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return -1;
 		}
 	}
@@ -365,7 +340,7 @@ slow_divmod(const struct fm__bigint *a,
 			destroy(q_);
 			destroy(r_);
 			destroy(b2);
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return -1;
 		}
 		destroy(b2);
@@ -385,7 +360,7 @@ slow_divmod(const struct fm__bigint *a,
 				destroy(*r);
 				*q = NULL;
 				*r = NULL;
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return -1;
 			}
 		}
@@ -404,7 +379,7 @@ divmod(const struct fm__bigint *a_,
 	struct fm__bigint a, b;
 
 	if (IS_ZERO(b_)) {
-		FM__TRACE("divide by zero");
+		FM__ERRNO(FM__ERRNO_NUMERIC);
 		return -1;
 	}
 	a = *a_;
@@ -412,7 +387,7 @@ divmod(const struct fm__bigint *a_,
 	a.sign = 0;
 	b.sign = 0;
 	if (slow_divmod(&a, &b, q, r)) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return -1;
 	}
 	if (IS_NEGATIVE(a_) ^ IS_NEGATIVE(b_)) {
@@ -436,7 +411,7 @@ shl(const struct fm__bigint *a, int n)
 	q = n / 64;
 	r = n % 64;
 	if (!(z = create(a->width + q + 1))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	memset(z->parts, 0, z->width * sizeof (z->parts[0]));
@@ -486,7 +461,7 @@ shr(const struct fm__bigint *a, int n)
 	/* logic shift */
 
 	if (!(z = create(MAX(0, a->width - q)))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (z->width) {
@@ -508,7 +483,7 @@ shr(const struct fm__bigint *a, int n)
 		if (IS_ZERO(z)) {
 			destroy(z);
 			if (!(z = clone(C[17]))) {
-				FM__TRACE(NULL);
+				FM__ERRNO(0);
 				return NULL;
 			}
 		}
@@ -525,7 +500,7 @@ shr(const struct fm__bigint *a, int n)
 						      (z->width + 1) *
 						      sizeof (uint64_t)))) {
 					destroy(z);
-					FM__TRACE("out of memory");
+					FM__ERRNO(FM__ERRNO_MEMORY);
 					return NULL;
 				}
 				z->parts = parts;
@@ -546,12 +521,12 @@ complement(const struct fm__bigint *a, int width)
 	assert( IS_NEGATIVE(a) );
 
 	if (!(t1 = usub(a, C[1]))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (!(t2 = create(width))) {
 		destroy(t1);
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	for (i=0; i<width; ++i) {
@@ -572,7 +547,7 @@ uand(const struct fm__bigint *a, const struct fm__bigint *b, int width)
 	assert( !IS_NEGATIVE(a) && !IS_NEGATIVE(b) );
 
 	if (!(z = create(width))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	for (i=0; i<width; ++i) {
@@ -589,7 +564,7 @@ convert_int(int64_t i)
 	struct fm__bigint *z;
 
 	if (!(z = create(1))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	z->parts[0] = (0 > i) ? ~(uint64_t)i + 1 : (uint64_t)i;
@@ -609,7 +584,7 @@ convert_real(double r)
 	/* validate */
 
 	if ((r != r) || (-DBL_MAX > r) || (DBL_MAX < r)) {
-		FM__TRACE("invalid floating-point value");
+		FM__ERRNO(FM__ERRNO_NUMERIC);
 		return NULL;
 	}
 
@@ -624,7 +599,7 @@ convert_real(double r)
 
 	if (0 >= (exp + 53)) {
 		if (!(z = convert_int(0))) {
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		return z;
@@ -633,7 +608,7 @@ convert_real(double r)
 	/* create */
 
 	if (!(z = create(DUP(exp + 53, 64)))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	memset(z->parts, 0, z->width * sizeof (z->parts[0]));
@@ -700,12 +675,12 @@ convert_string(const char *s)
 		sign = ('-' == s[0]);
 		++s;
 		if (!*s) {
-			FM__TRACE("invalid numeric string");
+			FM__ERRNO(FM__ERRNO_ARGUMENTS);
 			return NULL;
 		}
 	}
 	if ((0 > dec2int((unsigned char)*s)) && ('.' != *s)) {
-		FM__TRACE("invalid numeric string");
+		FM__ERRNO(FM__ERRNO_ARGUMENTS);
 		return NULL;
 	}
 	if (('0' == s[0]) && (('x' == s[1]) || ('X' == s[1]))) {
@@ -713,7 +688,7 @@ convert_string(const char *s)
 		p2v = hex2int;
 		s += 2;
 		if (!*s) {
-			FM__TRACE("invalid numeric string");
+			FM__ERRNO(FM__ERRNO_ARGUMENTS);
 			return NULL;
 		}
 	}
@@ -728,11 +703,11 @@ convert_string(const char *s)
 				    (EINVAL == errno) ||
 				    (ERANGE == errno) ||
 				    *e) {
-					FM__TRACE("invalid numeric string");
+					FM__ERRNO(FM__ERRNO_ARGUMENTS);
 					return NULL;
 				}
 				if (!(z = convert_real(r))) {
-					FM__TRACE(NULL);
+					FM__ERRNO(0);
 					return NULL;
 				}
 				z->sign = sign;
@@ -744,19 +719,19 @@ convert_string(const char *s)
 		s = s_;
 	}
 	if (!(z = convert_int(0))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	while (*s) {
 		if (0 > (v = p2v((unsigned char)*s))) {
 			destroy(z);
-			FM__TRACE("invalid numeric string");
+			FM__ERRNO(FM__ERRNO_ARGUMENTS);
 			return NULL;
 		}
 		if (!(a = mul(z, C[m])) || !(b = add(a, C[v]))) {
 			destroy(a);
 			destroy(z);
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		destroy(a);
@@ -781,7 +756,7 @@ fm__bigint_init(void)
 	    ('d' != ('a' + 3)) ||
 	    ('e' != ('a' + 4)) ||
 	    ('f' != ('a' + 5))) {
-		FM__TRACE("unsupported architecture");
+		FM__ERRNO(FM__ERRNO_ARCHITECTURE);
 		abort();
 	}
 }
@@ -822,7 +797,7 @@ fm__bigint_neg(fm__bigint_t a)
 	assert( a );
 
 	if (!(z = clone(a))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (!IS_ZERO(z)) {
@@ -863,7 +838,7 @@ fm__bigint_div(fm__bigint_t a, fm__bigint_t b)
 	assert( a && b );
 
 	if (divmod(a, b, &q, &r)) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	destroy(r);
@@ -878,7 +853,7 @@ fm__bigint_mod(fm__bigint_t a, fm__bigint_t b)
 	assert( a && b );
 
 	if (divmod(a, b, &q, &r)) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	destroy(q);
@@ -893,7 +868,7 @@ fm__bigint_shl(fm__bigint_t a, fm__bigint_t b)
 	assert( a && b );
 
 	if (IS_NEGATIVE(b)) {
-		FM__TRACE("negative left-shift count");
+		FM__ERRNO(FM__ERRNO_ARGUMENTS);
 		return NULL;
 	}
 	if (IS_ZERO(a)) {
@@ -901,7 +876,7 @@ fm__bigint_shl(fm__bigint_t a, fm__bigint_t b)
 	}
 	if ((1 < b->width) ||
 	    (MAX_BITS <= (n = IS_ZERO(b) ? 0 : b->parts[0]))) {
-		FM__TRACE("left-shift count too large");
+		FM__ERRNO(FM__ERRNO_MEMORY);
 		return NULL;
 	}
 	return finalize(shl(a, (int)n));
@@ -915,7 +890,7 @@ fm__bigint_shr(fm__bigint_t a, fm__bigint_t b)
 	assert( a && b );
 
 	if (IS_NEGATIVE(b)) {
-		FM__TRACE("negative right-shift count");
+		FM__ERRNO(FM__ERRNO_ARGUMENTS);
 		return NULL;
 	}
 	if (IS_ZERO(a) ||
@@ -939,7 +914,7 @@ fm__bigint_not(fm__bigint_t a)
 	assert( a );
 
 	if (!(t1 = clone(a))) {
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	if (!IS_ZERO(t1)) {
@@ -947,7 +922,7 @@ fm__bigint_not(fm__bigint_t a)
 	}
 	if (!(z = sub(t1, C[1]))) {
 		destroy(t1);
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	destroy(t1);
@@ -966,7 +941,7 @@ fm__bigint_and(fm__bigint_t a, fm__bigint_t b)
 	t1 = NULL;
 	if (IS_NEGATIVE(a)) {
 		if (!(t1 = complement(a, width))) {
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 	}
@@ -974,14 +949,14 @@ fm__bigint_and(fm__bigint_t a, fm__bigint_t b)
 	if (IS_NEGATIVE(b)) {
 		if (!(t2 = complement(b, width))) {
 			destroy(t1);
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 	}
 	if (!(z = uand(t1 ? t1 : a, t2 ? t2 : b, width))) {
 		destroy(t1);
 		destroy(t2);
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	destroy(t1);
@@ -990,7 +965,7 @@ fm__bigint_and(fm__bigint_t a, fm__bigint_t b)
 		z->sign = 1;
 		if (!(t1 = complement(z, width))) {
 			destroy(z);
-			FM__TRACE(NULL);
+			FM__ERRNO(0);
 			return NULL;
 		}
 		t1->sign = 1;
@@ -1016,7 +991,7 @@ fm__bigint_or(fm__bigint_t a, fm__bigint_t b)
 		fm__bigint_free(t1);
 		fm__bigint_free(t2);
 		fm__bigint_free(t3);
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	fm__bigint_free(t1);
@@ -1040,7 +1015,7 @@ fm__bigint_xor(fm__bigint_t a, fm__bigint_t b)
 		fm__bigint_free(t1);
 		fm__bigint_free(t2);
 		fm__bigint_free(t3);
-		FM__TRACE(NULL);
+		FM__ERRNO(0);
 		return NULL;
 	}
 	fm__bigint_free(t1);
@@ -1144,10 +1119,10 @@ fm__bigint_uint64(fm__bigint_t a, int clamp /* bool */, uint64_t *i)
 	}
 	if (IS_NEGATIVE(a) || (64 < fm__bigint_bits(a))) {
 		if (clamp) {
-			*i = IS_NEGATIVE(a) ? 0 : UINT64_MAX;
+			*i = IS_NEGATIVE(a) ? 0 : FM__UTILS_UINT64_MAX;
 			return 0;
 		}
-		FM__TRACE("value out of unsigned 64-bit range");
+		FM__ERRNO(FM__ERRNO_NUMERIC);
 		return -1;
 	}
 	*i = a->parts[0];
@@ -1171,15 +1146,17 @@ fm__bigint_int64(fm__bigint_t a, int clamp /* bool */, int64_t *i)
 	     (bits == (63 + 1)) &&
 	     (a->parts[0] > ((uint64_t)1 << 63)))) {
 		if (clamp) {
-			*i = IS_NEGATIVE(a) ? INT64_MIN : INT64_MAX;
+			*i = (IS_NEGATIVE(a)
+			      ? FM__UTILS_INT64_MIN
+			      : FM__UTILS_INT64_MAX);
 			return 0;
 		}
-		FM__TRACE("value out of signed 64-bit range");
+		FM__ERRNO(FM__ERRNO_NUMERIC);
 		return -1;
 	}
 	if (IS_NEGATIVE(a)) {
 		*i = ((a->parts[0] == ((uint64_t)1 << 63))
-		      ? INT64_MIN
+		      ? FM__UTILS_INT64_MIN
 		      : -(int64_t)a->parts[0]);
 	}
 	else {

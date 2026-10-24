@@ -1,14 +1,27 @@
+/**
+ * Copyright (c) 2025-2026 Tony Givargis
+ * University of California, Irvine
+ * main.c
+ */
+
+#include "fm_utils.h"
 #include "fm_lexer.h"
-#include "fm_parser.h"
+#include "fm_bigint.h"
+
+static void
+stage(void)
+{
+}
 
 int
-main()
+main(int argc, char *argv[])
 {
-	const char *s = "1+2-3*4/5";
-	fm__parser_t parser;
+	(void)argc;
+	(void)argv;
 
+	fm__utils_init();
 	fm__lexer_init();
-	parser = fm__parser_open(s);
-	fm__parser_close(parser);
+	fm__bigint_init();
+	stage();
 	return 0;
 }
